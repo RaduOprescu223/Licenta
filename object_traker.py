@@ -1,9 +1,7 @@
 from collections import OrderedDict
 import numpy as np
 import cv2
-from Filtrul_Kalman import KalmanFilterTracker # <-- Importul clasei KF
-
-# ... Copiază aici întregul cod al clasei ObjectTracker (cu toate metodele helper) ...
+from Filtrul_Kalman import KalmanFilterTracker 
 class ObjectTracker:
     """
     Gestionează mai multe filtre Kalman, atribuie ID-uri și asociază detecțiile YOLO
@@ -11,17 +9,13 @@ class ObjectTracker:
     """
 
     def __init__(self, iou_threshold=0.5, max_age=5):
-        # Un dicționar ordonat pentru a stoca trackerele Kalman pentru fiecare obiect
-        # Key: ID Obiect (int), Value: KalmanFilterTracker instance
+        
         self.tracked_objects = OrderedDict()
 
-        # ID-ul unic ce va fi atribuit următorului obiect nou
         self.next_object_id = 0
 
-        # Pragul IOU: Cât de mult trebuie să se suprapună o detecție cu o predicție
         self.iou_threshold = iou_threshold
 
-        # Numărul maxim de cadre în care un obiect poate lipsi înainte de a fi șters
         self.max_age = max_age
 
         # Contorul pentru cât timp a lipsit fiecare obiect
@@ -33,13 +27,7 @@ class ObjectTracker:
 
     def update_tracks(self, yolo_detections):
         """
-        Funcția principală de update:
-        1. Predicție Kalman pentru obiectele existente.
-        2. Asocierea predicțiilor cu detecțiile YOLO.
-        3. Corecție Kalman pentru potriviri.
-        4. Înregistrare obiecte noi și ștergere obiecte pierdute.
-
-        yolo_detections: Listă de tuple [(x_center, y_center, width, height), ...]
+      
         """
 
         # 1. PREDICTEAZĂ pozițiile noi pentru obiectele urmărite
