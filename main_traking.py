@@ -1,7 +1,7 @@
 import cv2
 from ultralytics import YOLO
 
-
+#Comentariu reper
 from object_traker import ObjectTracker
 
 def run_real_time_tracking():
