@@ -1,14 +1,13 @@
 import cv2
 from ultralytics import YOLO
 
-# Importă logica de tracking din fișierele create
+
 from object_traker import ObjectTracker
 
 def run_real_time_tracking():
-    # 1. Inițializare YOLO și Camera
-    # Folosim modelul nano, cel mai rapid (dar care rulează doar pe CPU)
+  
     model = YOLO('yolov8n.pt')
-    cap = cv2.VideoCapture(0) # 0 = camera web default a laptopului
+    cap = cv2.VideoCapture(0) 
 
     if not cap.isOpened():
         print("Eroare: Nu s-a putut deschide camera!")
@@ -26,7 +25,7 @@ def run_real_time_tracking():
             break
 
         # 3. Detecția YOLO
-        results = model(frame, verbose=False) # Rularea inferentei
+        results = model(frame, verbose=False) 
 
         yolo_detections = []
         for r in results:
@@ -35,7 +34,7 @@ def run_real_time_tracking():
                 # Extrage BBox-ul (colțuri)
                 x1, y1, x2, y2 = [int(val) for val in box.xyxy[0].tolist()]
 
-                # Calculează Centrul, Lățimea, Înălțimea (necesar pentru Kalman)
+               
                 width = x2 - x1
                 height = y2 - y1
                 center_x = x1 + width // 2
@@ -47,11 +46,10 @@ def run_real_time_tracking():
         # 4. Actualizarea Tracker-ului cu Filtre Kalman
         tracked_objects_data = tracker.update_tracks(yolo_detections)
 
-        # 5. Afișare Rezultate
-        # tracked_objects_data: [(ID, x1, y1, x2, y2), ...]
+       
         for obj_id, x1, y1, x2, y2 in tracked_objects_data:
             # Desenează Bounding Box-ul CU COORDONATELE CORECTATE DE KALMAN
-            color = (255, 0, 0) # Albastru
+            color = (255, 0, 0) 
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
             cv2.putText(frame, f'ID: {obj_id}', (x1, y1 - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
