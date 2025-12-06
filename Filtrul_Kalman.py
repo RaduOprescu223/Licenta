@@ -2,9 +2,7 @@ import numpy as np
 import cv2
 
 class KalmanFilterTracker:
-    """
-    Gestionează un singur filtru Kalman pentru urmărirea unui obiect 2D (poziție și viteză).
-    """
+    
     def __init__(self, initial_bbox_center):
         # 1. Definiția Stării (State Vector): [px, py, vx, vy]
         self.kf = cv2.KalmanFilter(4, 2)
